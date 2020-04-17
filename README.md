@@ -12,7 +12,7 @@ The calculation follows this basic algorithm.
 5) Given the map of usage values to occurences, find the largest number of occurences that is greater than the number of hours in the evaluation times the breakeven percentage. This maximum value's key is the actual amount of usage that you should buy reserved capacity for since it represents the largest amount of capacity you could buy without crossing the break even point.
 6) DynamoDB reserved capacity is purchased on blocks of 100, so while the evaluation was based on individual RCUs and WCUs, the actual recommendation will be in chunks of 100 for each.
 
-The results of the algorithm will depend heavily on the evaluation period you select. For example, if you only chose 1 day, and that day happened to be an outlier in terms of either having really high or really low usage compared to your average, you might buy too much or too little. Similarly, if you choose to long a period, say a year, and you have steadily increasing usage over time, the earlier months will pull down the recommended quantity and you may end up purchasing too little.
+The results of the algorithm will depend heavily on the evaluation period you select. For example, if you only chose 1 day, and that day happened to be an outlier in terms of either having really high or really low usage compared to your average, you might buy too much or too little. Similarly, if you choose too long of a period, say a year, and you have steadily increasing usage over time, the earlier months will pull down the recommended quantity and you may end up purchasing too little.
 
 ## Setting Up the Infrastructure
 
