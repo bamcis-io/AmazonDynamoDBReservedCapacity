@@ -25,7 +25,10 @@ The results of the algorithm will depend heavily on the evaluation period you se
 7) Run the `ddb_price_list_reserved_capacity_recommendations.sql` query in Athena. The output will provide recommendations for the different permutations of purchasing options. For example, you have DynamoDB usage in us-east-1 and us-west-2. The query will give you data on purchasing `WriteCapacity-Hrs`, `ReadCapacity-Hrs`, `USW2-WriteCapacity-Hrs`, and `USW2-ReadCapacity-Hrs` for both 1 and 3 year terms.
 8) You'll get details on recommended number of blocks of 100 units to buy, cost savings percentages, total savings during the lease period, etc.
 
-### Explanation of Columns
+## Explanation of Columns
+
+### Price List Data
+These are the columns in the price list data table:
 
 - **sku** - The overall product sku, this is common between on demand and reserved terms
 - **offertermcode** - The code that corresponds with the offer term, i.e. one year or three year
@@ -46,6 +49,9 @@ The results of the algorithm will depend heavily on the evaluation period you se
 - **ondemandcostforterm** - The cost of the unit for the lease term with on demand pricing
 - **costsavings** - The cost savings over the lease term by using reserved capacity instead of on demand pricing
 - **percentsavings** - The percent savings over the lease term
+
+### Recommendation Output
+TODO
 
 ## Revisions
 
