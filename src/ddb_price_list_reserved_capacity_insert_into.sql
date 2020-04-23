@@ -16,6 +16,7 @@ AS(
           ( 'UGW1', 'us-gov-west-1' ),
           ( 'UGE1', 'us-gov-east-1' ),
           ( 'CAN1', 'ca-central-1' ),
+          ( 'AFS1', 'af-south-1' ),
           ( 'APN1', 'ap-northeast-1' ),
           ( 'APN2', 'ap-northeast-2' ),
           ( 'APN3', 'ap-northeast-3' ),

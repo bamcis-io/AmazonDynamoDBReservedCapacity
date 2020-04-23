@@ -101,27 +101,23 @@ SELECT
     floor(
         COALESCE(
             reduce(
-                map_values(agg_usage.usage_per_hour_for_timespan), -- Take the values of usage per hour, input data
-                CAST(
-                    ROW(
-                        MAP(        -- Create a map of the total usages per hour, and the number of times they occur in the period, defaulting to 0
-                            array_distinct(
-                                map_values(agg_usage.usage_per_hour_for_timespan)
-                            ),
+                map_values(agg_usage.usage_per_hour_for_timespan), -- Take the values of usage per hour, the input data array
+                CAST( -- Cast the data to a row as the initial state
+                    ROW( -- The row is a Map of usage quantities
+                        MAP(
+                            sequence(CAST(array_min(agg_usage.usage_per_hour_for_timespan) AS BIGINT), CAST(array_max(app_usage.usage_per_hour_for_timespan) AS BIGINT)), -- the map keys, all of the possible usage between the min and max usage, i.e. 1300 to 2700 by 1
                             transform(
-                                array_distinct(
-                                    map_values(agg_usage.usage_per_hour_for_timespan)
-                                ),
+                                sequence(CAST(array_min(agg_usage.usage_per_hour_for_timespan) AS BIGINT), CAST(array_max(app_usage.usage_per_hour_for_timespan) AS BIGINT))
                                 x -> 0
-                            )
+                            ) -- The initial value for each hour
                         )
-                    ) AS ROW(map MAP(INTEGER, INTEGER))
-                ),                                     -- this defines the initial state, so { 5: 0, 6: 0, 1: 0, 20: 0} the capacity used distinct values and 0 occurences
+                    ) AS ROW(map MAP(BIGINT, BIGINT))
+                ),
                 (initial_state, hourly_usage) -> CAST( -- given the initial state and array of hourly usages, evaluate each hourly usage value
                     ROW(
                         transform_values(initial_state.map, (key, value) -> 
                             IF (hourly_usage <= key, value + 1, value)    -- Update all values if this usage quantity is less than or equal
-                                                                        -- So if 6 were running, we also count that towards 5, 4, 3, 2, 1
+                                                                          -- So if 6 were running, we also count that towards 5, 4, 3, 2, 1
                         )                                                            
                     ) AS ROW (map MAP(INTEGER, INTEGER))
                 ), 
